@@ -18,6 +18,7 @@ import type {
   Movie,
   Genre,
 } from "@/lib/data/types";
+import CatalogItemCard from "@/components/catalog/CatalogItemCard";
 
 export const metadata: Metadata = {
   title: "Catalogues",
@@ -64,12 +65,9 @@ function MusicCatalog({
           Artistes
         </h2>
 
-        <ul className="grid grid-cols-1 gap-4 xs:grid-cols-2 lg:grid-cols-3">
+        <ul className="items_list">
           {artists.map((artist) => (
-            <li
-              key={artist.id}
-              className="rounded-lg border border-border p-4"
-            >
+            <li key={artist.id} className="rounded-lg border border-border p-4">
               <h3 className="font-semibold">{artist.name}</h3>
               <p>{artist.country}</p>
               <p className="text-sm">
@@ -86,28 +84,23 @@ function MusicCatalog({
           Œuvres
         </h2>
 
-        <ul className="grid grid-cols-1 gap-4 xs:grid-cols-2 lg:grid-cols-3">
+        <ul className="items_list">
           {works.map((work) => {
-            const artist = artists.find(
-              (item) => item.id === work.artistId
-            );
+            const artist = artists.find((item) => item.id === work.artistId);
 
-            const workGenres = genres.filter((genre) =>
-              work.genreIds.includes(genre.id)
-            );
+            const workGenres = genres
+              .filter((genre) => work.genreIds.includes(genre.id))
+              .map((genre) => genre.name);
 
             return (
-              <li
+              <CatalogItemCard
                 key={work.id}
-                className="rounded-lg border border-border p-4"
-              >
-                <h3 className="font-semibold">{work.title}</h3>
-                <p>{artist?.name ?? "Artiste inconnu"}</p>
-                <p>{work.year}</p>
-                <p className="text-sm">
-                  {workGenres.map((genre) => genre.name).join(", ")}
-                </p>
-              </li>
+                href={`/catalog/music/works/${work.slug}`}
+                title={work.title}
+                subtitle={artist?.name ?? "Artiste inconnu"}
+                year={work.year}
+                genres={workGenres}
+              />
             );
           })}
         </ul>
@@ -133,7 +126,7 @@ function CinemaCatalog({
           Réalisateurs
         </h2>
 
-        <ul className="grid grid-cols-1 gap-4 xs:grid-cols-2 lg:grid-cols-3">
+        <ul className="items_list">
           {directors.map((director) => (
             <li
               key={director.id}
@@ -155,28 +148,25 @@ function CinemaCatalog({
           Films
         </h2>
 
-        <ul className="grid grid-cols-1 gap-4 xs:grid-cols-2 lg:grid-cols-3">
-          {movies.map((movie: Movie) => {
+        <ul className="items_list">
+          {movies.map((movie) => {
             const director = directors.find(
-              (item) => item.id === movie.directorId
+              (item) => item.id === movie.directorId,
             );
 
-            const movieGenres = genres.filter((genre) =>
-              movie.genreIds.includes(genre.id)
-            );
+            const movieGenres = genres
+              .filter((genre) => movie.genreIds.includes(genre.id))
+              .map((genre) => genre.name);
 
             return (
-              <li
+              <CatalogItemCard
                 key={movie.id}
-                className="rounded-lg border border-border p-4"
-              >
-                <h3 className="font-semibold">{movie.title}</h3>
-                <p>{director?.name ?? "Réalisateur inconnu"}</p>
-                <p>{movie.year}</p>
-                <p className="text-sm">
-                  {movieGenres.map((genre) => genre.name).join(", ")}
-                </p>
-              </li>
+                href={`/catalog/cinema/movies/${movie.slug}`}
+                title={movie.title}
+                subtitle={director?.name ?? "Réalisateur inconnu"}
+                year={movie.year}
+                genres={movieGenres}
+              />
             );
           })}
         </ul>
@@ -223,9 +213,7 @@ async function CatalogContent({ params }: CatalogPageProps) {
 
 export default function CatalogPage({ params }: CatalogPageProps) {
   return (
-    <Suspense
-      fallback={<p role="status">Chargement du catalogue...</p>}
-    >
+    <Suspense fallback={<p role="status">Chargement du catalogue...</p>}>
       <CatalogContent params={params} />
     </Suspense>
   );
