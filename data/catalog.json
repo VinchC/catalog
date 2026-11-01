@@ -33,6 +33,7 @@
       {
         "id": "work-001",
         "title": "The Dark Side of the Moon",
+        "slug": "the-dark-side-of-the-moon",
         "artistId": "artist-001",
         "year": 1973,
         "genreIds": ["mgenre-001"]
@@ -40,6 +41,7 @@
       {
         "id": "work-002",
         "title": "Wish You Were Here",
+        "slug": "wish-you-were-here",
         "artistId": "artist-001",
         "year": 1975,
         "genreIds": ["mgenre-001"]
@@ -47,6 +49,7 @@
       {
         "id": "work-003",
         "title": "Random Access Memories",
+        "slug": "random-access-memories",
         "artistId": "artist-002",
         "year": 2013,
         "genreIds": ["mgenre-002"]
@@ -54,6 +57,7 @@
       {
         "id": "work-004",
         "title": "Bitches Brew",
+        "slug": "bitches-brew",
         "artistId": "artist-003",
         "year": 1970,
         "genreIds": ["mgenre-003", "mgenre-004"]
@@ -70,10 +74,10 @@
       },
       {
         "id": "director-002",
-        "name": "Agnès Varda",
-        "country": "France",
+        "name": "Stanley Kubrick",
+        "country": "Etats-Unis",
         "birthYear": 1928,
-        "deathYear": 2019
+        "deathYear": 1999
       }
     ],
     "genres": [
@@ -85,6 +89,7 @@
       {
         "id": "movie-001",
         "title": "Interstellar",
+        "slug": "interstellar",
         "directorId": "director-001",
         "year": 2014,
         "genreIds": ["cgenre-001", "cgenre-002"]
@@ -92,16 +97,18 @@
       {
         "id": "movie-002",
         "title": "Inception",
+        "slug": "inception",
         "directorId": "director-001",
         "year": 2010,
         "genreIds": ["cgenre-001"]
       },
       {
         "id": "movie-003",
-        "title": "Les Glaneurs et la Glaneuse",
+        "title": "Orange mécanique",
+        "slug": "orange-mecanique",
         "directorId": "director-002",
-        "year": 2000,
-        "genreIds": ["cgenre-003"]
+        "year": 1971,
+        "genreIds": ["cgenre-002"]
       }
     ]
   }

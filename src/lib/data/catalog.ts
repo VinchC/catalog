@@ -1,5 +1,4 @@
-import catalogData from '../../../data/catalog.json';
-
+import catalogData from "../../../data/catalog.json";
 
 import type {
   CatalogData,
@@ -49,4 +48,13 @@ export function getMusicalArtistById(id: string): MusicalArtist | undefined {
 
 export function getMovieDirectorById(id: string): MovieDirector | undefined {
   return data.cinema.directors.find((director) => director.id === id);
+}
+
+// Fonctions de recherche par slug.
+export function getMusicalWorkBySlug(slug: string): MusicalWork | undefined {
+  return data.music.works.find((work) => work.slug === slug);
+}
+
+export function getMovieBySlug(slug: string): Movie | undefined {
+  return data.cinema.movies.find((movie) => movie.slug === slug);
 }

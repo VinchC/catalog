@@ -18,6 +18,7 @@ export type MusicalArtist = {
 export type MusicalWork = {
   id: string;
   title: string;
+  slug: string;
   artistId: string;
   year: number;
   genreIds: string[];
@@ -42,6 +43,7 @@ export type MovieDirector = {
 export type Movie = {
   id: string;
   title: string;
+  slug: string;
   directorId: string;
   year: number;
   genreIds: string[];
