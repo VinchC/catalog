@@ -1,26 +1,72 @@
 @import "tailwindcss";
 
+/* 
+ * Variables de thème :
+ * les composants utilisent les mêmes noms de variables,
+ * mais leurs valeurs changent selon le thème actif.
+ */
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --button-background: #ee1409;
+  --border-color: #d4d4d4;
 }
 
+html.dark {
+  --background: #121212;
+  --foreground: #f5f5f5;
+  --button-background: #1e0afa;
+  --border-color: #404040;
+}
+
+/*
+ * Correspondance entre les variables CSS et les utilitaires Tailwind.
+ * Les points de rupture correspondent aux largeurs demandées :
+ * 432, 768 et 1024 pixels.
+ */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-button-background: var(--button-background);
+  --color-border: var(--border-color);
+
+  --breakpoint-xs: 27rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  min-height: 100%;
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
 }
 
 body {
+  min-height: 100vh;
+  margin: 0;
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Indicateur de focus visible pour la navigation au clavier. */
+:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* Évite que les liens héritent d'une couleur imprévisible. */
+a {
+  color: inherit;
+}
+
+/* Les boutons héritent de la typographie de l'application. */
+button,
+input,
+select,
+textarea {
+  font: inherit;
 }
