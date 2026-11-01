@@ -1,0 +1,108 @@
+{
+  "music": {
+    "artists": [
+      {
+        "id": "artist-001",
+        "name": "Pink Floyd",
+        "country": "Royaume-Uni",
+        "startYear": 1965,
+        "endYear": 2014
+      },
+      {
+        "id": "artist-002",
+        "name": "Daft Punk",
+        "country": "France",
+        "startYear": 1993,
+        "endYear": 2021
+      },
+      {
+        "id": "artist-003",
+        "name": "Miles Davis",
+        "country": "États-Unis",
+        "startYear": 1944,
+        "endYear": 1991
+      }
+    ],
+    "genres": [
+      { "id": "mgenre-001", "name": "Rock progressif" },
+      { "id": "mgenre-002", "name": "Musique électronique" },
+      { "id": "mgenre-003", "name": "Jazz" },
+      { "id": "mgenre-004", "name": "Jazz fusion" }
+    ],
+    "works": [
+      {
+        "id": "work-001",
+        "title": "The Dark Side of the Moon",
+        "artistId": "artist-001",
+        "year": 1973,
+        "genreIds": ["mgenre-001"]
+      },
+      {
+        "id": "work-002",
+        "title": "Wish You Were Here",
+        "artistId": "artist-001",
+        "year": 1975,
+        "genreIds": ["mgenre-001"]
+      },
+      {
+        "id": "work-003",
+        "title": "Random Access Memories",
+        "artistId": "artist-002",
+        "year": 2013,
+        "genreIds": ["mgenre-002"]
+      },
+      {
+        "id": "work-004",
+        "title": "Bitches Brew",
+        "artistId": "artist-003",
+        "year": 1970,
+        "genreIds": ["mgenre-003", "mgenre-004"]
+      }
+    ]
+  },
+  "cinema": {
+    "directors": [
+      {
+        "id": "director-001",
+        "name": "Christopher Nolan",
+        "country": "Royaume-Uni",
+        "birthYear": 1970
+      },
+      {
+        "id": "director-002",
+        "name": "Agnès Varda",
+        "country": "France",
+        "birthYear": 1928,
+        "deathYear": 2019
+      }
+    ],
+    "genres": [
+      { "id": "cgenre-001", "name": "Science-fiction" },
+      { "id": "cgenre-002", "name": "Drame" },
+      { "id": "cgenre-003", "name": "Documentaire" }
+    ],
+    "movies": [
+      {
+        "id": "movie-001",
+        "title": "Interstellar",
+        "directorId": "director-001",
+        "year": 2014,
+        "genreIds": ["cgenre-001", "cgenre-002"]
+      },
+      {
+        "id": "movie-002",
+        "title": "Inception",
+        "directorId": "director-001",
+        "year": 2010,
+        "genreIds": ["cgenre-001"]
+      },
+      {
+        "id": "movie-003",
+        "title": "Les Glaneurs et la Glaneuse",
+        "directorId": "director-002",
+        "year": 2000,
+        "genreIds": ["cgenre-003"]
+      }
+    ]
+  }
+}
