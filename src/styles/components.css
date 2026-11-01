@@ -1,0 +1,6 @@
+@layer components {
+  /* Style commun aux liens de sélection des catalogues. */
+  .catalog_link {
+    @apply block rounded-lg border border-border p-6 transition-colors hover:bg-foreground/5;
+  }
+}
