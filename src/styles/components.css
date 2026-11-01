@@ -11,4 +11,12 @@
   .items_list {
     @apply grid grid-cols-1 gap-4 xs:grid-cols-2 lg:grid-cols-3;
   }
+
+  .page_stack {
+    @apply space-y-8;
+  }
+
+  .item_stack {
+    @apply mt-8;
+  }
 }

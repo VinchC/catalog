@@ -40,7 +40,7 @@ async function MovieContent({ params }: MoviePageProps) {
     .map((genre) => genre.name);
 
   return (
-    <div className="space-y-8">
+    <div className="page_stack">
       <Link href="/catalog/cinema" className="underline">
         ← Retour au catalogue cinéma
       </Link>

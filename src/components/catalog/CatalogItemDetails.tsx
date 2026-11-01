@@ -16,8 +16,8 @@ export default function CatalogItemDetails({
   genres,
 }: CatalogItemDetailsProps) {
   return (
-    <article className="space-y-6">
-      <header className="space-y-2 mt-8">
+    <article className="page_stack item_stack">
+      <header className="space-y-4">
         <h1 className="text-3xl font-bold">{title}</h1>
 
         <p>
@@ -29,7 +29,7 @@ export default function CatalogItemDetails({
         </p>
       </header>
 
-      <section aria-labelledby="detail-genres-title" className="space-y-2">
+      <section aria-labelledby="detail-genres-title" className="space-y-4">
         <h2 id="detail-genres-title" className="text-xl font-semibold">
           Genres
         </h2>

@@ -40,7 +40,7 @@ async function WorkContent({ params }: WorkPageProps) {
     .map((genre) => genre.name);
 
   return (
-    <div className="space-y-8">
+    <div className="page_stack">
       <Link href="/catalog/music" className="underline">
         ← Retour au catalogue musical
       </Link>
