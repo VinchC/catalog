@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "À propos",
@@ -8,7 +9,7 @@ export default function AboutPage() {
   return (
     <section aria-labelledby="about-title" className="space-y-4">
       <h1 id="about-title" className="text-3xl font-bold">
-        À propos de Catalog
+        À propos de {siteConfig.name}
       </h1>
 
       <p>

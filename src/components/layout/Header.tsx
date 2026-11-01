@@ -1,5 +1,6 @@
 import Link from "next/link";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import { siteConfig } from "@/config/site";
 
 export default function Header() {
   return (
@@ -8,9 +9,9 @@ export default function Header() {
         <Link
           href="/"
           className="text-xl font-bold"
-          aria-label="Catalog - Accueil"
+          aria-label="`${siteConfig.name} - Accueil`"
         >
-          Catalog
+          {siteConfig.name}
         </Link>
 
         <nav aria-label="Navigation principale">

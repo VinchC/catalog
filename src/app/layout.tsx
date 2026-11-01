@@ -4,15 +4,16 @@ import type { ReactNode } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ThemeProvider from "@/components/providers/ThemeProvider";
+import { siteConfig } from "@/config/site";
 
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Catalog",
-    template: "%s | Catalog",
+    default: siteConfig.name,
+    template: `%s | ${siteConfig.name}`,
   },
-  description: "Un catalogue évolutif consacré à la musique et au cinéma.",
+  description: siteConfig.description,
 };
 
 type RootLayoutProps = {
