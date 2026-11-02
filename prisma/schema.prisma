@@ -14,7 +14,7 @@ datasource db {
 // ==================================================
 
 model Artist {
-  id        String  @id
+  id        String @id
   name      String
   country   String
   startYear Int
@@ -30,8 +30,8 @@ model MusicalWork {
   year     Int
   artistId String
 
-  artist  Artist              @relation(fields: [artistId], references: [id], onDelete: Restrict)
-  genres  MusicalWorkGenre[]
+  artist Artist             @relation(fields: [artistId], references: [id], onDelete: Restrict)
+  genres MusicalWorkGenre[]
 
   @@index([artistId])
 }
@@ -60,12 +60,13 @@ model MusicalWorkGenre {
 // ==================================================
 
 model MovieDirector {
-  id        String  @id
+  id        String @id
   name      String
   country   String
   birthYear Int
   deathYear Int?
 
+  // Un réalisateur peut être associé à plusieurs films.
   movies Movie[]
 }
 
@@ -76,7 +77,7 @@ model Movie {
   year       Int
   directorId String
 
-  director Movie          @relation(fields: [directorId], references: [id], onDelete: Restrict)
+  director MovieDirector @relation(fields: [directorId], references: [id], onDelete: Restrict)
   genres   MovieGenre[]
 
   @@index([directorId])
