@@ -7,17 +7,17 @@
  * mais leurs valeurs changent selon le thème actif.
  */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #dad3d3;
+  --foreground: #1f024c;
   --button-background: #ee1409;
-  --border-color: #d4d4d4;
+  --border-color: #fc0404;
 }
 
 html.dark {
-  --background: #121212;
-  --foreground: #f5f5f5;
+  --background: #000822;
+  --foreground: #bdbeb1;
   --button-background: #1e0afa;
-  --border-color: #404040;
+  --border-color: #24f105;
 }
 
 /*
