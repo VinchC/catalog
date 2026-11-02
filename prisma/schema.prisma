@@ -1,0 +1,102 @@
+// Génération du client Prisma.
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+// Type de base de données.
+datasource db {
+  provider = "postgresql"
+}
+
+// ==================================================
+// CATALOGUE MUSICAL
+// ==================================================
+
+model Artist {
+  id        String  @id
+  name      String
+  country   String
+  startYear Int
+  endYear   Int?
+
+  works MusicalWork[]
+}
+
+model MusicalWork {
+  id       String @id
+  slug     String @unique
+  title    String
+  year     Int
+  artistId String
+
+  artist  Artist              @relation(fields: [artistId], references: [id], onDelete: Restrict)
+  genres  MusicalWorkGenre[]
+
+  @@index([artistId])
+}
+
+model MusicGenre {
+  id   String @id
+  name String @unique
+
+  works MusicalWorkGenre[]
+}
+
+// Table de liaison entre les œuvres et les genres.
+model MusicalWorkGenre {
+  workId  String
+  genreId String
+
+  work  MusicalWork @relation(fields: [workId], references: [id], onDelete: Cascade)
+  genre MusicGenre  @relation(fields: [genreId], references: [id], onDelete: Restrict)
+
+  @@id([workId, genreId])
+  @@index([genreId])
+}
+
+// ==================================================
+// CATALOGUE CINÉMA
+// ==================================================
+
+model MovieDirector {
+  id        String  @id
+  name      String
+  country   String
+  birthYear Int
+  deathYear Int?
+
+  movies Movie[]
+}
+
+model Movie {
+  id         String @id
+  slug       String @unique
+  title      String
+  year       Int
+  directorId String
+
+  director Movie          @relation(fields: [directorId], references: [id], onDelete: Restrict)
+  genres   MovieGenre[]
+
+  @@index([directorId])
+}
+
+model CinemaGenre {
+  id   String @id
+  name String @unique
+
+  movies MovieGenre[]
+}
+
+// Table de liaison entre les films et les genres.
+model MovieGenre {
+  movieId String
+  genreId String
+
+  movie Movie       @relation(fields: [movieId], references: [id], onDelete: Cascade)
+  genre CinemaGenre @relation(fields: [genreId], references: [id], onDelete: Restrict)
+
+  @@id([movieId, genreId])
+  @@index([genreId])
+}
