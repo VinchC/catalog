@@ -23,7 +23,6 @@ type CatalogPageProps = {
   params: Promise<{ type: string }>;
 };
 
-// Configuration des catalogues disponibles.
 const catalogs = {
   music: {
     title: "Catalogue musical",
@@ -37,18 +36,24 @@ const catalogs = {
 
 type CatalogType = keyof typeof catalogs;
 
-// Vérifie que le catalogue demandé existe.
 function isCatalogType(type: string): type is CatalogType {
   return Object.hasOwn(catalogs, type);
 }
 
-// Affichage du catalogue musical.
-function MusicCatalog() {
-  const artists = getMusicalArtists();
-  const works = getMusicalWorks();
-  const genres = getMusicalGenres();
+// --------------------------------------------------
+// Catalogue musical
+// --------------------------------------------------
 
-  // Prépare les données au format attendu par CatalogBrowser.
+async function MusicCatalog() {
+  // Charge les collections en parallèle.
+  const [artists, works, genres] = await Promise.all([
+    getMusicalArtists(),
+    getMusicalWorks(),
+    getMusicalGenres(),
+  ]);
+
+  // Transforme les données métier au format commun
+  // attendu par CatalogBrowser.
   const browserItems = works.map((work) => {
     const artist = artists.find((item) => item.id === work.artistId);
 
@@ -77,7 +82,6 @@ function MusicCatalog() {
           {artists.map((artist) => (
             <li key={artist.id} className="catalog_item">
               <h3 className="text-lg font-semibold">{artist.name}</h3>
-
               <p>{artist.country}</p>
 
               <p>
@@ -105,13 +109,20 @@ function MusicCatalog() {
   );
 }
 
-// Affichage du catalogue cinéma.
-function CinemaCatalog() {
-  const directors = getMovieDirectors();
-  const movies = getMovies();
-  const genres = getMovieGenres();
+// --------------------------------------------------
+// Catalogue cinéma
+// --------------------------------------------------
 
-  // Prépare les données au format attendu par CatalogBrowser.
+async function CinemaCatalog() {
+  // Charge les collections en parallèle.
+  const [directors, movies, genres] = await Promise.all([
+    getMovieDirectors(),
+    getMovies(),
+    getMovieGenres(),
+  ]);
+
+  // Transforme les données métier au format commun
+  // attendu par CatalogBrowser.
   const browserItems = movies.map((movie) => {
     const director = directors.find((item) => item.id === movie.directorId);
 
@@ -168,7 +179,10 @@ function CinemaCatalog() {
   );
 }
 
-// Contenu dynamique de la page.
+// --------------------------------------------------
+// Page dynamique du catalogue
+// --------------------------------------------------
+
 async function CatalogContent({ params }: CatalogPageProps) {
   const { type } = await params;
 
@@ -196,7 +210,6 @@ async function CatalogContent({ params }: CatalogPageProps) {
   );
 }
 
-// Conserve Suspense autour de l'accès aux paramètres dynamiques.
 export default function CatalogPage({ params }: CatalogPageProps) {
   return (
     <Suspense fallback={<p role="status">Chargement du catalogue...</p>}>

@@ -2,59 +2,69 @@ import catalogData from "../../../data/catalog.json";
 
 import type {
   CatalogData,
+  Genre,
+  Movie,
+  MovieDirector,
   MusicalArtist,
   MusicalWork,
-  MovieDirector,
-  Movie,
-  Genre,
 } from "@/lib/data/types";
 
-// Vérification de la structure générale à la compilation.
+// Source de données actuelle.
+// Cette variable pourra être remplacée par un accès à PostgreSQL.
 const data: CatalogData = catalogData;
 
-// Fonctions de lecture du catalogue musical.
+// --------------------------------------------------
+// Catalogue musical
+// --------------------------------------------------
 
-export function getMusicalArtists(): MusicalArtist[] {
+export async function getMusicalArtists(): Promise<MusicalArtist[]> {
   return data.music.artists;
 }
 
-export function getMusicalWorks(): MusicalWork[] {
+export async function getMusicalWorks(): Promise<MusicalWork[]> {
   return data.music.works;
 }
 
-export function getMusicalGenres(): Genre[] {
+export async function getMusicalGenres(): Promise<Genre[]> {
   return data.music.genres;
 }
 
-// Fonctions de lecture du catalogue cinéma.
-
-export function getMovieDirectors(): MovieDirector[] {
-  return data.cinema.directors;
-}
-
-export function getMovies(): Movie[] {
-  return data.cinema.movies;
-}
-
-export function getMovieGenres(): Genre[] {
-  return data.cinema.genres;
-}
-
-// Fonctions de recherche par identifiant.
-
-export function getMusicalArtistById(id: string): MusicalArtist | undefined {
+export async function getMusicalArtistById(
+  id: string
+): Promise<MusicalArtist | undefined> {
   return data.music.artists.find((artist) => artist.id === id);
 }
 
-export function getMovieDirectorById(id: string): MovieDirector | undefined {
-  return data.cinema.directors.find((director) => director.id === id);
-}
-
-// Fonctions de recherche par slug.
-export function getMusicalWorkBySlug(slug: string): MusicalWork | undefined {
+export async function getMusicalWorkBySlug(
+  slug: string
+): Promise<MusicalWork | undefined> {
   return data.music.works.find((work) => work.slug === slug);
 }
 
-export function getMovieBySlug(slug: string): Movie | undefined {
+// --------------------------------------------------
+// Catalogue cinéma
+// --------------------------------------------------
+
+export async function getMovieDirectors(): Promise<MovieDirector[]> {
+  return data.cinema.directors;
+}
+
+export async function getMovies(): Promise<Movie[]> {
+  return data.cinema.movies;
+}
+
+export async function getMovieGenres(): Promise<Genre[]> {
+  return data.cinema.genres;
+}
+
+export async function getMovieDirectorById(
+  id: string
+): Promise<MovieDirector | undefined> {
+  return data.cinema.directors.find((director) => director.id === id);
+}
+
+export async function getMovieBySlug(
+  slug: string
+): Promise<Movie | undefined> {
   return data.cinema.movies.find((movie) => movie.slug === slug);
 }

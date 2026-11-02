@@ -23,19 +23,21 @@ type MoviePageProps = {
 
 async function MovieContent({ params }: MoviePageProps) {
   const { slug } = await params;
-  const movie = getMovieBySlug(slug);
+  const movie = await getMovieBySlug(slug);
 
   if (!movie) {
     notFound();
   }
 
-  const director = getMovieDirectorById(movie.directorId);
+  const director = await getMovieDirectorById(movie.directorId);
 
   if (!director) {
     notFound();
   }
 
-  const genres = getMovieGenres()
+  const allGenres = await getMovieGenres();
+
+  const genres = allGenres
     .filter((genre) => movie.genreIds.includes(genre.id))
     .map((genre) => genre.name);
 

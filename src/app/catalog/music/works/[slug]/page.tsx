@@ -23,19 +23,21 @@ type WorkPageProps = {
 
 async function WorkContent({ params }: WorkPageProps) {
   const { slug } = await params;
-  const work = getMusicalWorkBySlug(slug);
+  const work = await getMusicalWorkBySlug(slug);
 
   if (!work) {
     notFound();
   }
 
-  const artist = getMusicalArtistById(work.artistId);
+  const artist = await getMusicalArtistById(work.artistId);
 
   if (!artist) {
     notFound();
   }
 
-  const genres = getMusicalGenres()
+  const allGenres = await getMusicalGenres();
+
+  const genres = allGenres
     .filter((genre) => work.genreIds.includes(genre.id))
     .map((genre) => genre.name);
 
