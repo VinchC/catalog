@@ -1,7 +1,6 @@
-import catalogData from "../../../data/catalog.json";
+import { prisma } from "@/lib/prisma";
 
 import type {
-  CatalogData,
   Genre,
   Movie,
   MovieDirector,
@@ -9,62 +8,146 @@ import type {
   MusicalWork,
 } from "@/lib/data/types";
 
-// Source de données actuelle.
-// Cette variable pourra être remplacée par un accès à PostgreSQL.
-const data: CatalogData = catalogData;
+// ==================================================
+// CATALOGUE MUSICAL
+// ==================================================
 
-// --------------------------------------------------
-// Catalogue musical
-// --------------------------------------------------
-
+// Récupère tous les artistes.
 export async function getMusicalArtists(): Promise<MusicalArtist[]> {
-  return data.music.artists;
+  return prisma.artist.findMany({
+    orderBy: { name: "asc" },
+  });
 }
 
+// Récupère toutes les œuvres et leurs genres.
 export async function getMusicalWorks(): Promise<MusicalWork[]> {
-  return data.music.works;
+  const works = await prisma.musicalWork.findMany({
+    include: {
+      genres: {
+        select: { genreId: true },
+      },
+    },
+    orderBy: { title: "asc" },
+  });
+
+  // Convertit les relations Prisma en genreIds,
+  // pour conserver le format utilisé par les composants.
+  return works.map(({ genres, ...work }) => ({
+    ...work,
+    genreIds: genres.map((genre) => genre.genreId),
+  }));
 }
 
+// Récupère tous les genres musicaux.
 export async function getMusicalGenres(): Promise<Genre[]> {
-  return data.music.genres;
+  return prisma.musicGenre.findMany({
+    orderBy: { name: "asc" },
+  });
 }
 
+// Récupère un artiste à partir de son identifiant.
 export async function getMusicalArtistById(
-  id: string
+  id: string,
 ): Promise<MusicalArtist | undefined> {
-  return data.music.artists.find((artist) => artist.id === id);
+  return (
+    (await prisma.artist.findUnique({
+      where: { id },
+    })) ?? undefined
+  );
 }
 
+// Récupère une œuvre à partir de son slug.
 export async function getMusicalWorkBySlug(
-  slug: string
+  slug: string,
 ): Promise<MusicalWork | undefined> {
-  return data.music.works.find((work) => work.slug === slug);
+  const work = await prisma.musicalWork.findUnique({
+    where: { slug },
+    include: {
+      genres: {
+        select: { genreId: true },
+      },
+    },
+  });
+
+  if (!work) {
+    return undefined;
+  }
+
+  const { genres, ...workData } = work;
+
+  return {
+    ...workData,
+    genreIds: genres.map((genre) => genre.genreId),
+  };
 }
 
-// --------------------------------------------------
-// Catalogue cinéma
-// --------------------------------------------------
+// ==================================================
+// CATALOGUE CINÉMA
+// ==================================================
 
+// Récupère tous les réalisateurs.
 export async function getMovieDirectors(): Promise<MovieDirector[]> {
-  return data.cinema.directors;
+  return prisma.movieDirector.findMany({
+    orderBy: { name: "asc" },
+  });
 }
 
+// Récupère tous les films et leurs genres.
 export async function getMovies(): Promise<Movie[]> {
-  return data.cinema.movies;
+  const movies = await prisma.movie.findMany({
+    include: {
+      genres: {
+        select: { genreId: true },
+      },
+    },
+    orderBy: { title: "asc" },
+  });
+
+  return movies.map(({ genres, ...movie }) => ({
+    ...movie,
+    genreIds: genres.map((genre) => genre.genreId),
+  }));
 }
 
+// Récupère tous les genres cinématographiques.
 export async function getMovieGenres(): Promise<Genre[]> {
-  return data.cinema.genres;
+  return prisma.cinemaGenre.findMany({
+    orderBy: { name: "asc" },
+  });
 }
 
+// Récupère un réalisateur à partir de son identifiant.
 export async function getMovieDirectorById(
-  id: string
+  id: string,
 ): Promise<MovieDirector | undefined> {
-  return data.cinema.directors.find((director) => director.id === id);
+  return (
+    (await prisma.movieDirector.findUnique({
+      where: { id },
+    })) ?? undefined
+  );
 }
 
+// Récupère un film à partir de son slug.
 export async function getMovieBySlug(
-  slug: string
+  slug: string,
 ): Promise<Movie | undefined> {
-  return data.cinema.movies.find((movie) => movie.slug === slug);
+  const movie = await prisma.movie.findUnique({
+    where: { slug },
+    include: {
+      genres: {
+        select: { genreId: true },
+      },
+    },
+  });
+
+  if (!movie) {
+    return undefined;
+  }
+
+  const { genres, ...movieData } = movie;
+
+  return {
+    ...movieData,
+    genreIds: genres.map((genre) => genre.genreId),
+  };
 }

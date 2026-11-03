@@ -12,7 +12,7 @@ export type MusicalArtist = {
   name: string;
   country: string;
   startYear: number;
-  endYear?: number;
+  endYear: number | null;
 };
 
 export type MusicalWork = {
@@ -37,7 +37,7 @@ export type MovieDirector = {
   name: string;
   country: string;
   birthYear: number;
-  deathYear?: number;
+  deathYear: number | null;
 };
 
 export type Movie = {
