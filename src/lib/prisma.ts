@@ -13,11 +13,7 @@ const adapter = new PrismaPg({
 });
 
 // Réutilise le client existant ou en crée un nouveau.
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    adapter,
-  });
+export const prisma = new PrismaClient({ adapter });
 
 // Conserve le client entre les rechargements en développement.
 if (process.env.NODE_ENV !== "production") {
