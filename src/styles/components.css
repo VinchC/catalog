@@ -19,4 +19,8 @@
   .item_stack {
     @apply mt-8;
   }
+
+  .header-link {
+    @apply text-sm underline-offset-4 hover:underline;
+  }
 }
