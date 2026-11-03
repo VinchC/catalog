@@ -101,3 +101,20 @@ model MovieGenre {
   @@id([movieId, genreId])
   @@index([genreId])
 }
+
+// Rôles disponibles dans l'application
+enum Role {
+  USER
+  ADMIN
+}
+
+// Utilisateurs autorisés à se connecter
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(USER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}

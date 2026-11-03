@@ -81,3 +81,8 @@ export type CinemaGenre = Prisma.CinemaGenreModel
  * 
  */
 export type MovieGenre = Prisma.MovieGenreModel
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel

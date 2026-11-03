@@ -58,7 +58,8 @@ export const ModelName = {
   MovieDirector: 'MovieDirector',
   Movie: 'Movie',
   CinemaGenre: 'CinemaGenre',
-  MovieGenre: 'MovieGenre'
+  MovieGenre: 'MovieGenre',
+  User: 'User'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -151,6 +152,19 @@ export const MovieGenreScalarFieldEnum = {
 } as const
 
 export type MovieGenreScalarFieldEnum = (typeof MovieGenreScalarFieldEnum)[keyof typeof MovieGenreScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
 export const SortOrder = {

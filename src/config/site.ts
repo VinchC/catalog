@@ -3,7 +3,7 @@
 // dans les différents composants qui les utilisent.
 
 export const siteConfig = {
-  name: "Catalog",
+  name: "Pops' catalogue",
   description:
     "Un catalogue évolutif consacré à la musique et au cinéma.",
   tagline:
