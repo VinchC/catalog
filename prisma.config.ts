@@ -11,6 +11,7 @@ export default defineConfig({
   // Emplacement des migrations.
   migrations: {
     path: "prisma/migrations",
+    seed: "tsx prisma/seed.ts",
   },
 
   // URL de connexion à la base PostgreSQL.
