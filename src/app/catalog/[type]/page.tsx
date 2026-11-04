@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 
 import CatalogBrowser from "@/components/catalog/CatalogBrowser";
+import ActionNotice from "@/components/ui/ActionNotice";
 
 import {
   getMusicalArtists,
@@ -21,6 +22,7 @@ export const metadata: Metadata = {
 
 type CatalogPageProps = {
   params: Promise<{ type: string }>;
+  searchParams: Promise<{ notice?: string | string[] }>;
 };
 
 const catalogs = {
@@ -183,8 +185,8 @@ async function CinemaCatalog() {
 // Page dynamique du catalogue
 // --------------------------------------------------
 
-async function CatalogContent({ params }: CatalogPageProps) {
-  const { type } = await params;
+async function CatalogContent({ params, searchParams }: CatalogPageProps) {
+  const [{ type }, query] = await Promise.all([params, searchParams]);
 
   if (!isCatalogType(type)) {
     notFound();
@@ -192,12 +194,22 @@ async function CatalogContent({ params }: CatalogPageProps) {
 
   const catalog = catalogs[type];
 
+  const notice =
+    typeof query.notice === "string" &&
+    ["created", "updated", "deleted"].includes(query.notice)
+      ? (query.notice as "created" | "updated" | "deleted")
+      : undefined;
+
   return (
     <div className="page_stack">
       <header className="space-y-2">
         <h1 className="text-3xl font-bold">{catalog.title}</h1>
         <p>{catalog.description}</p>
       </header>
+
+      {type === "music" && notice && (
+        <ActionNotice action={notice} itemType="œuvre" />
+      )}
 
       {type === "music" ? <MusicCatalog /> : <CinemaCatalog />}
 
@@ -210,10 +222,13 @@ async function CatalogContent({ params }: CatalogPageProps) {
   );
 }
 
-export default function CatalogPage({ params }: CatalogPageProps) {
+export default function CatalogPage({
+  params,
+  searchParams,
+}: CatalogPageProps) {
   return (
     <Suspense fallback={<p role="status">Chargement du catalogue...</p>}>
-      <CatalogContent params={params} />
+      <CatalogContent params={params} searchParams={searchParams} />
     </Suspense>
   );
 }

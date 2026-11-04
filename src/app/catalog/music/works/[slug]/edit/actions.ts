@@ -117,5 +117,5 @@ export async function updateMusicalWork(
   revalidatePath(`/catalog/music/works/${originalSlug}/edit`);
   revalidatePath(`/catalog/music/works/${slug}/edit`);
 
-  redirect(`/catalog/music/works/${slug}`);
+  redirect("/catalog/music?notice=updated");
 }

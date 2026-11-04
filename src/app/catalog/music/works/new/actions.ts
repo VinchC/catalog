@@ -1,4 +1,3 @@
-
 "use server";
 
 import { revalidatePath } from "next/cache";
@@ -76,11 +75,12 @@ export async function createMusicalWork(
 
   if (existingWork) {
     return {
-      error: "Une œuvre utilisant déjà ce titre existe. Choisissez un autre titre.",
+      error:
+        "Une œuvre utilisant déjà ce titre existe. Choisissez un autre titre.",
     };
   }
 
-  const work = await prisma.musicalWork.create({
+  await prisma.musicalWork.create({
     data: {
       id: crypto.randomUUID(),
       slug,
@@ -97,5 +97,5 @@ export async function createMusicalWork(
 
   revalidatePath("/catalog/music");
 
-  redirect(`/catalog/music/works/${work.slug}`);
+  redirect("/catalog/music?notice=created");
 }

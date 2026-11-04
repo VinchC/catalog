@@ -5,9 +5,3 @@
 # Ajouter fonctionnalité Créer un artiste, qui sera accessible à User et Admin.
 
 # Ajouter fonctionnalité Créer un genre accessible uniquement aux Admin.
-
-# Ajouter des messages :
-
-- oeuvre supprimée
-- oeuvre créée
-- oeuvre modifiée

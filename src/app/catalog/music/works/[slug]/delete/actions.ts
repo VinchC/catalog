@@ -1,4 +1,3 @@
-
 "use server";
 
 import { prisma } from "@/lib/prisma";
@@ -35,5 +34,5 @@ export async function deleteMusicalWork(formData: FormData) {
   revalidatePath("/catalog/music");
   revalidatePath(`/catalog/music/works/${slug}`);
 
-  redirect("/catalog/music");
+  redirect("/catalog/music?notice=deleted");
 }
