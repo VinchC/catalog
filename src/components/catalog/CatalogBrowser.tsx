@@ -1,10 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import CatalogItemCard from "@/components/catalog/CatalogItemCard";
 
-// Structure commune aux œuvres musicales et aux films.
-// La page serveur transforme les données métier en objets de ce type.
 export type CatalogBrowserItem = {
   slug: string;
   title: string;
@@ -29,30 +27,29 @@ export default function CatalogBrowser({
   searchLabel,
   searchPlaceholder,
 }: CatalogBrowserProps) {
-  // Valeurs des contrôles.
+  const id = useId();
+
   const [search, setSearch] = useState("");
   const [selectedPerson, setSelectedPerson] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("");
   const [sortOrder, setSortOrder] = useState<SortOrder>("title-asc");
 
-  // Liste unique des artistes ou réalisateurs présents dans les résultats.
   const people = useMemo(
-    () => [...new Set(items.map((item) => item.person))].sort((a, b) =>
-      a.localeCompare(b, "fr")
-    ),
-    [items]
+    () =>
+      [...new Set(items.map((item) => item.person))].sort((a, b) =>
+        a.localeCompare(b, "fr"),
+      ),
+    [items],
   );
 
-  // Liste unique des genres disponibles.
   const genres = useMemo(
     () =>
       [...new Set(items.flatMap((item) => item.genres))].sort((a, b) =>
-        a.localeCompare(b, "fr")
+        a.localeCompare(b, "fr"),
       ),
-    [items]
+    [items],
   );
 
-  // Recherche, application des filtres et tri.
   const filteredItems = useMemo(() => {
     const query = search.trim().toLocaleLowerCase("fr");
 
@@ -60,11 +57,9 @@ export default function CatalogBrowser({
       .filter((item) => {
         const matchesSearch =
           query === "" ||
-          [
-            item.title,
-            item.person,
-            ...item.genres,
-          ].some((value) => value.toLocaleLowerCase("fr").includes(query));
+          [item.title, item.person, ...item.genres].some((value) =>
+            value.toLocaleLowerCase("fr").includes(query),
+          );
 
         const matchesPerson =
           selectedPerson === "" || item.person === selectedPerson;
@@ -87,7 +82,12 @@ export default function CatalogBrowser({
       });
   }, [items, search, selectedPerson, selectedGenre, sortOrder]);
 
-  // Remise à zéro de tous les contrôles.
+  const hasActiveFilters =
+    search !== "" ||
+    selectedPerson !== "" ||
+    selectedGenre !== "" ||
+    sortOrder !== "title-asc";
+
   function resetFilters() {
     setSearch("");
     setSelectedPerson("");
@@ -96,37 +96,40 @@ export default function CatalogBrowser({
   }
 
   return (
-    <section aria-label="Recherche et filtres du catalogue" className="space-y-6">
-      {/* Contrôles de recherche, de filtrage et de tri */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <section
+      aria-label="Recherche et filtres du catalogue"
+      className="space-y-6"
+    >
+      <fieldset className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <legend className="sr-only">
+          Recherche, filtres et tri des résultats
+        </legend>
+
         <div className="space-y-1">
-          <label htmlFor="catalog-search" className="block font-medium">
+          <label htmlFor={`${id}-search`} className="block font-medium">
             {searchLabel}
           </label>
-
           <input
-            id="catalog-search"
+            id={`${id}-search`}
             type="search"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
             placeholder={searchPlaceholder}
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground"
+            className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
           />
         </div>
 
         <div className="space-y-1">
-          <label htmlFor="catalog-person" className="block font-medium">
+          <label htmlFor={`${id}-person`} className="block font-medium">
             {personLabel}
           </label>
-
           <select
-            id="catalog-person"
+            id={`${id}-person`}
             value={selectedPerson}
             onChange={(event) => setSelectedPerson(event.target.value)}
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground"
+            className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
           >
             <option value="">Tous</option>
-
             {people.map((person) => (
               <option key={person} value={person}>
                 {person}
@@ -136,18 +139,16 @@ export default function CatalogBrowser({
         </div>
 
         <div className="space-y-1">
-          <label htmlFor="catalog-genre" className="block font-medium">
+          <label htmlFor={`${id}-genre`} className="block font-medium">
             Genre
           </label>
-
           <select
-            id="catalog-genre"
+            id={`${id}-genre`}
             value={selectedGenre}
             onChange={(event) => setSelectedGenre(event.target.value)}
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground"
+            className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
           >
             <option value="">Tous</option>
-
             {genres.map((genre) => (
               <option key={genre} value={genre}>
                 {genre}
@@ -157,28 +158,24 @@ export default function CatalogBrowser({
         </div>
 
         <div className="space-y-1">
-          <label htmlFor="catalog-sort" className="block font-medium">
+          <label htmlFor={`${id}-sort`} className="block font-medium">
             Trier par
           </label>
-
           <select
-            id="catalog-sort"
+            id={`${id}-sort`}
             value={sortOrder}
-            onChange={(event) =>
-              setSortOrder(event.target.value as SortOrder)
-            }
-            className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground"
+            onChange={(event) => setSortOrder(event.target.value as SortOrder)}
+            className="w-full rounded-md border border-border bg-background px-3 py-2 text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
           >
             <option value="title-asc">Titre (A à Z)</option>
             <option value="year-desc">Année (plus récente)</option>
             <option value="year-asc">Année (plus ancienne)</option>
           </select>
         </div>
-      </div>
+      </fieldset>
 
-      {/* Résumé des résultats et réinitialisation */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p role="status" aria-live="polite">
+        <p role="status" aria-live="polite" aria-atomic="true">
           {filteredItems.length} résultat
           {filteredItems.length !== 1 ? "s" : ""}
           {" sur "}
@@ -188,15 +185,15 @@ export default function CatalogBrowser({
         <button
           type="button"
           onClick={resetFilters}
-          className="rounded-md border border-border px-3 py-2 underline underline-offset-4"
+          disabled={!hasActiveFilters}
+          className="rounded-md border border-border px-3 py-2 underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current disabled:cursor-not-allowed disabled:opacity-50"
         >
           Réinitialiser
         </button>
       </div>
 
-      {/* Résultats */}
       {filteredItems.length > 0 ? (
-        <ul className="items_list">
+        <ul className="items_list" aria-label="Résultats du catalogue">
           {filteredItems.map((item) => (
             <CatalogItemCard
               key={item.slug}

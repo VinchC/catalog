@@ -20,7 +20,7 @@ export default function CatalogItemCard({
       <h3 className="text-lg font-semibold">
         <Link
           href={href}
-          className="underline-offset-4 hover:underline"
+          className="rounded-sm underline-offset-4 hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current"
         >
           {title}
         </Link>
