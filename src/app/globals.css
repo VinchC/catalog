@@ -14,10 +14,10 @@
 }
 
 html.dark {
-  --background: #000751;
+  --background: #01042d;
   --foreground: #bdbeb1;
   --button-background: #fa0a0a;
-  --border-color: #f3f800;
+  --border-color: #02e63b;
 }
 
 /*

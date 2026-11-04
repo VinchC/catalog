@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 
+import CreateWorkLink from "@/components/catalog/CreateWorkLink";
 import CatalogBrowser from "@/components/catalog/CatalogBrowser";
 import ActionNotice from "@/components/ui/ActionNotice";
 
@@ -11,6 +12,7 @@ import {
   getMusicalWorks,
   getMusicalGenres,
 } from "@/lib/data/catalog";
+import CreateArtistLink from "@/components/catalog/CreateArtistLink";
 
 export const metadata: Metadata = {
   title: "Catalogue musical",
@@ -115,7 +117,10 @@ async function CatalogContent({ params, searchParams }: CatalogPageProps) {
         <h1 className="text-3xl font-bold">Catalogue musical</h1>
         <p>Artistes, œuvres et genres musicaux.</p>
       </header>
-
+      <div className="flex justify-between">
+        <CreateWorkLink />
+        <CreateArtistLink />
+      </div>
       {notice && <ActionNotice action={notice} itemType="œuvre" />}
 
       <MusicCatalog />
