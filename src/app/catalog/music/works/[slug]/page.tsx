@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 
 import CatalogItemDetails from "@/components/catalog/CatalogItemDetails";
+import EditWorkLink from "@/components/catalog/EditWorkLink";
 
 import {
   getMusicalWorkBySlug,
@@ -43,9 +44,13 @@ async function WorkContent({ params }: WorkPageProps) {
 
   return (
     <div className="page_stack">
-      <Link href="/catalog/music" className="underline">
-        ← Retour au catalogue musical
-      </Link>
+<div className="flex flex-wrap items-center justify-between gap-4">
+  <Link href="/catalog/music" className="underline">
+    ← Retour au catalogue musical
+  </Link>
+
+  <EditWorkLink href={`/catalog/music/works/${work.slug}/edit`} />
+</div>
 
       <CatalogItemDetails
         title={work.title}
