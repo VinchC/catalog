@@ -8,16 +8,16 @@
  */
 :root {
   --background: #dad3d3;
-  --foreground: #1f024c;
-  --button-background: #ee1409;
+  --foreground: #2d016e;
+  --button-background: #f3f800;
   --border-color: #fc0404;
 }
 
 html.dark {
-  --background: #000822;
+  --background: #000751;
   --foreground: #bdbeb1;
-  --button-background: #1e0afa;
-  --border-color: #24f105;
+  --button-background: #fa0a0a;
+  --border-color: #f3f800;
 }
 
 /*

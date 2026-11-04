@@ -1,5 +1,3 @@
-# Désactiver la route /catalog/cinema
-
 # Ajouter un bouton Créer une œuvre sur la page /catalog/music, il n'y a actuellement aucun lien vers catalog/music/works/new,
 
 # Ajouter fonctionnalité Créer un artiste, qui sera accessible à User et Admin.

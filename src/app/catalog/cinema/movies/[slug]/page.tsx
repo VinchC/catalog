@@ -15,6 +15,12 @@ export const metadata: Metadata = {
   title: "Fiche de film",
 };
 
+// Autorise le rendu bloquant de cette route.
+export const instant = false;
+
+// Active ou désactive temporairement le catalogue cinéma.
+const cinemaEnabled = false;
+
 type MoviePageProps = {
   params: Promise<{
     slug: string;
@@ -60,6 +66,10 @@ async function MovieContent({ params }: MoviePageProps) {
 }
 
 export default function MoviePage({ params }: MoviePageProps) {
+  if (!cinemaEnabled) {
+    notFound();
+  }
+
   return (
     <Suspense fallback={<p role="status">Chargement de la fiche du film…</p>}>
       <MovieContent params={params} />
