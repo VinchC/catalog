@@ -1,13 +1,16 @@
+
+import { Suspense } from "react";
 import Link from "next/link";
 import { connection } from "next/server";
+
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import MobileMenu from "@/components/layout/MobileMenu";
 import { siteConfig } from "@/config/site";
 import { auth } from "@/auth";
 import { logout } from "@/app/logout/actions";
 
-export default async function Header() {
-  // La session dépend de la requête : on évite le prérendu statique.
+async function HeaderContent() {
+  // Attend une requête réelle avant de lire la session.
   await connection();
 
   const session = await auth();
@@ -83,5 +86,21 @@ export default async function Header() {
         </div>
       </div>
     </header>
+  );
+}
+
+export default function Header() {
+  return (
+    <Suspense
+      fallback={
+        <header className="border-b border-border">
+          <div className="mx-auto max-w-6xl px-4 py-4">
+            <span className="text-xl font-bold">{siteConfig.name}</span>
+          </div>
+        </header>
+      }
+    >
+      <HeaderContent />
+    </Suspense>
   );
 }
