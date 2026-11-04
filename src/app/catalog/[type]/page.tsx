@@ -13,6 +13,7 @@ import {
   getMusicalGenres,
 } from "@/lib/data/catalog";
 import CreateArtistLink from "@/components/catalog/CreateArtistLink";
+import EditArtistLink from "@/components/catalog/EditArtistLink";
 
 export const metadata: Metadata = {
   title: "Catalogue musical",
@@ -64,10 +65,12 @@ async function MusicCatalog() {
 
         <ul className="items_list">
           {artists.map((artist) => (
-            <li key={artist.id} className="catalog_item">
-              <h3 className="text-lg font-semibold">{artist.name}</h3>
+            <li key={artist.id} className="catalog_item space-y-2">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <h3 className="text-lg font-semibold">{artist.name}</h3>
+                <EditArtistLink id={artist.id} />
+              </div>
               <p>{artist.country}</p>
-
               <p>
                 {artist.startYear}
                 {artist.endYear ? ` – ${artist.endYear}` : " – aujourd'hui"}
