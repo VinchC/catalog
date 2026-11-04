@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
+
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import { logout } from "@/app/logout/actions";
+import { activeCatalogs } from "@/config/site";
 
 type MobileMenuProps = {
   isAuthenticated: boolean;
@@ -17,24 +19,32 @@ export default function MobileMenu({
   userRole,
 }: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   function closeMenu() {
     setIsOpen(false);
   }
 
+  function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    if (event.key === "Escape" && isOpen) {
+      closeMenu();
+      buttonRef.current?.focus();
+    }
+  }
+
   return (
-    <div className="relative">
-      {/* Bouton burger */}
+    <div className="relative" onKeyDown={handleKeyDown}>
+      {/* Bouton d'ouverture et de fermeture */}
       <button
+        ref={buttonRef}
         type="button"
         onClick={() => setIsOpen((current) => !current)}
-        className="rounded-md p-2 hover:bg-foreground/5"
+        className="rounded-md p-2 hover:bg-foreground/5 focus-visible:outline-2 focus-visible:outline-offset-4"
         aria-label={isOpen ? "Fermer le menu" : "Ouvrir le menu"}
         aria-expanded={isOpen}
         aria-controls="mobile-navigation"
       >
         {isOpen ? (
-          // Icône de fermeture
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -51,7 +61,6 @@ export default function MobileMenu({
             />
           </svg>
         ) : (
-          // Icône burger
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -70,74 +79,61 @@ export default function MobileMenu({
         )}
       </button>
 
-      {/* Contenu du menu */}
-      {isOpen && (
-        <nav
-          id="mobile-navigation"
-          aria-label="Navigation mobile"
-          className="absolute right-0 top-full z-50 mt-3 w-64 rounded-lg border border-border bg-background p-4 shadow-lg"
-        >
-          <ul className="flex flex-col gap-4">
-            <li>
+      {/* Navigation mobile */}
+      <nav
+        id="mobile-navigation"
+        aria-label="Navigation mobile"
+        hidden={!isOpen}
+        className="absolute right-0 top-full z-50 mt-3 w-64 rounded-lg border border-border bg-background p-4 shadow-lg"
+      >
+        <ul className="flex flex-col gap-4">
+          {activeCatalogs.map((catalog) => (
+            <li key={catalog.type}>
               <Link
-                href="/catalog/music"
+                href={catalog.href}
                 className="header-link block"
                 onClick={closeMenu}
               >
-                Musique
+                {catalog.title}
               </Link>
             </li>
+          ))}
 
-            <li>
-              <Link
-                href="/catalog/cinema"
-                className="header-link block"
-                onClick={closeMenu}
-              >
-                Cinéma
+          <li>
+            <Link
+              href="/about"
+              className="header-link block"
+              onClick={closeMenu}
+            >
+              À propos
+            </Link>
+          </li>
+
+          <li className="border-t border-border pt-4">
+            {isAuthenticated ? (
+              <div className="flex flex-col gap-3">
+                <span className="text-sm text-muted-foreground">
+                  {userName} ({userRole})
+                </span>
+
+                <form action={logout}>
+                  <button type="submit" className="header-link">
+                    Déconnexion
+                  </button>
+                </form>
+              </div>
+            ) : (
+              <Link href="/login" className="header-link" onClick={closeMenu}>
+                Connexion
               </Link>
-            </li>
+            )}
+          </li>
 
-            <li>
-              <Link
-                href="/about"
-                className="header-link block"
-                onClick={closeMenu}
-              >
-                À propos
-              </Link>
-            </li>
-
-            <li className="border-t border-border pt-4">
-              {isAuthenticated ? (
-                <div className="flex flex-col gap-3">
-                  <span className="text-sm text-muted-foreground">
-                    {userName} ({userRole})
-                  </span>
-
-                  <form action={logout}>
-                    <button type="submit" className="header-link">
-                      Déconnexion
-                    </button>
-                  </form>
-                </div>
-              ) : (
-                <Link
-                  href="/login"
-                  className="header-link"
-                  onClick={closeMenu}
-                >
-                  Connexion
-                </Link>
-              )}
-            </li>
-
-            <li className="border-t border-border pt-4">
-              <ThemeToggle />
-            </li>
-          </ul>
-        </nav>
-      )}
+          <li className="border-t border-border pt-4">
+            <ThemeToggle />
+          </li>
+        </ul>
+      </nav>
     </div>
   );
 }

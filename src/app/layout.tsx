@@ -8,6 +8,7 @@ import ThemeProvider from "@/components/providers/ThemeProvider";
 import { siteConfig } from "@/config/site";
 
 import "./globals.css";
+import SkipLink from "@/components/layout/SkipLink";
 
 export const metadata: Metadata = {
   title: {
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="fr" suppressHydrationWarning>
       <body className="flex min-h-screen flex-col">
+        <SkipLink />
         <ThemeProvider>
           <Suspense
             fallback={
@@ -52,6 +54,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
 
           <main
             id="main-content"
+            tabIndex={-1}
             className="mx-auto w-full max-w-6xl flex-1 px-4 py-8"
           >
             {children}

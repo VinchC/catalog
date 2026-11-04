@@ -1,16 +1,14 @@
-
 import { Suspense } from "react";
 import Link from "next/link";
 import { connection } from "next/server";
 
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import MobileMenu from "@/components/layout/MobileMenu";
-import { siteConfig } from "@/config/site";
+import { siteConfig, activeCatalogs } from "@/config/site";
 import { auth } from "@/auth";
 import { logout } from "@/app/logout/actions";
 
 async function HeaderContent() {
-  // Attend une requête réelle avant de lire la session.
   await connection();
 
   const session = await auth();
@@ -19,31 +17,26 @@ async function HeaderContent() {
     <header className="border-b border-border">
       <div className="mx-auto max-w-6xl px-4 py-4">
         <div className="flex items-center justify-between gap-4 md:grid md:grid-cols-[1fr_auto_1fr]">
-          {/* Bloc gauche : identité du site */}
+          {/* Identité du site */}
           <Link
             href="/"
-            className="text-xl font-bold"
+            className="text-xl font-bold focus-visible:outline-2 focus-visible:outline-offset-4"
             aria-label={`${siteConfig.name} - Accueil`}
           >
             {siteConfig.name}
           </Link>
 
-          {/* Bloc central : navigation desktop */}
-          <nav
-            aria-label="Navigation principale"
-            className="hidden md:block"
-          >
+          {/* Navigation desktop */}
+          <nav aria-label="Navigation principale" className="hidden md:block">
             <ul className="flex items-center gap-6">
-              <li>
-                <Link href="/catalog/music" className="header-link">
-                  Musique
-                </Link>
-              </li>
-              <li>
-                <Link href="/catalog/cinema" className="header-link">
-                  Cinéma
-                </Link>
-              </li>
+              {activeCatalogs.map((catalog) => (
+                <li key={catalog.type}>
+                  <Link href={catalog.href} className="header-link">
+                    {catalog.title}
+                  </Link>
+                </li>
+              ))}
+
               <li>
                 <Link href="/about" className="header-link">
                   À propos
@@ -52,7 +45,7 @@ async function HeaderContent() {
             </ul>
           </nav>
 
-          {/* Bloc droit : compte et thème desktop */}
+          {/* Compte et thème desktop */}
           <div className="hidden items-center justify-end gap-4 md:flex">
             {session?.user ? (
               <>
@@ -75,7 +68,7 @@ async function HeaderContent() {
             <ThemeToggle />
           </div>
 
-          {/* Menu burger : visible uniquement sous 768 px */}
+          {/* Navigation mobile */}
           <div className="md:hidden">
             <MobileMenu
               isAuthenticated={Boolean(session?.user)}

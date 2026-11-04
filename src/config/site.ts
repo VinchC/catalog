@@ -1,22 +1,16 @@
-// Configuration générale de l'application.
-// Toute modification de ces valeurs se répercute
-// dans les différents composants qui les utilisent.
 
+// Configuration générale de l'application.
 export const siteConfig = {
   name: "Pops' catalogue",
-  description:
-    "Un catalogue évolutif consacré à la musique et au cinéma.",
-  tagline:
-    "Explore des catalogues de musique et de cinéma.",
+  description: "Un catalogue évolutif consacré à la musique.",
+  tagline: "Explore un catalogue consacré à la musique.",
 } as const;
 
 // Configuration des catalogues disponibles.
-// Ces données pourront être réutilisées dans la navigation,
-// la page d'accueil et d'autres composants.
-
 export const catalogConfig = [
   {
     type: "music",
+    enabled: true,
     title: "Musique",
     description: "Artistes, œuvres et genres musicaux.",
     href: "/catalog/music",
@@ -24,9 +18,15 @@ export const catalogConfig = [
   },
   {
     type: "cinema",
+    enabled: false,
     title: "Cinéma",
     description: "Réalisateurs, films et genres cinématographiques.",
     href: "/catalog/cinema",
     linkLabel: "Explorer le catalogue cinéma",
   },
 ] as const;
+
+// Seuls les catalogues activés sont affichés.
+export const activeCatalogs = catalogConfig.filter(
+  (catalog) => catalog.enabled,
+);
