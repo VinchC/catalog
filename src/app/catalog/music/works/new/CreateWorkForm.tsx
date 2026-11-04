@@ -1,11 +1,7 @@
-
 "use client";
 
 import { useActionState } from "react";
-import {
-  createMusicalWork,
-  type CreateWorkState,
-} from "./actions";
+import { createMusicalWork, type CreateWorkState } from "./actions";
 
 type Option = {
   id: string;
@@ -37,7 +33,9 @@ export default function CreateWorkForm({ artists, genres }: Props) {
           type="text"
           required
           maxLength={200}
-          className="w-full rounded-lg border border-border bg-background p-3"
+          disabled={pending}
+          aria-describedby={state.error ? "create-work-error" : undefined}
+          className="w-full rounded-lg border border-border bg-background p-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current disabled:opacity-50"
         />
       </div>
 
@@ -52,7 +50,9 @@ export default function CreateWorkForm({ artists, genres }: Props) {
           min="1"
           max="3000"
           required
-          className="w-full rounded-lg border border-border bg-background p-3"
+          disabled={pending}
+          aria-describedby={state.error ? "create-work-error" : undefined}
+          className="w-full rounded-lg border border-border bg-background p-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current disabled:opacity-50"
         />
       </div>
 
@@ -65,7 +65,9 @@ export default function CreateWorkForm({ artists, genres }: Props) {
           name="artistId"
           required
           defaultValue=""
-          className="w-full rounded-lg border border-border bg-background p-3"
+          disabled={pending}
+          aria-describedby={state.error ? "create-work-error" : undefined}
+          className="w-full rounded-lg border border-border bg-background p-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current disabled:opacity-50"
         >
           <option value="" disabled>
             Sélectionner un artiste
@@ -78,7 +80,7 @@ export default function CreateWorkForm({ artists, genres }: Props) {
         </select>
       </div>
 
-      <fieldset>
+      <fieldset disabled={pending}>
         <legend className="mb-3 font-medium">Genres musicaux</legend>
         <div className="space-y-2">
           {genres.map((genre) => (
@@ -87,6 +89,7 @@ export default function CreateWorkForm({ artists, genres }: Props) {
                 type="checkbox"
                 name="genreIds"
                 value={genre.id}
+                className="size-4 accent-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
               />
               {genre.name}
             </label>
@@ -95,7 +98,7 @@ export default function CreateWorkForm({ artists, genres }: Props) {
       </fieldset>
 
       {state.error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p id="create-work-error" role="alert" className="text-sm text-red-600">
           {state.error}
         </p>
       )}
@@ -103,7 +106,8 @@ export default function CreateWorkForm({ artists, genres }: Props) {
       <button
         type="submit"
         disabled={pending}
-        className="rounded-lg bg-foreground px-5 py-3 text-background disabled:opacity-50"
+        aria-disabled={pending}
+        className="rounded-lg bg-foreground px-5 py-3 text-background transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current disabled:cursor-not-allowed disabled:opacity-50"
       >
         {pending ? "Enregistrement..." : "Créer l’œuvre"}
       </button>

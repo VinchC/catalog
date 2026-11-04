@@ -1,4 +1,3 @@
-
 import { getMusicalArtists, getMusicalGenres } from "@/lib/data/catalog";
 import AuthBoundary from "@/components/auth/AuthBoundary";
 
@@ -11,9 +10,12 @@ async function NewMusicalWorkContent() {
   ]);
 
   return (
-    <section className="mx-auto w-full max-w-2xl space-y-8">
+    <section
+      aria-labelledby="page-title"
+      className="mx-auto w-full max-w-2xl space-y-8"
+    >
       <div>
-        <h1 className="text-2xl font-bold">
+        <h1 id="page-title" className="text-2xl font-bold">
           Ajouter une œuvre musicale
         </h1>
         <p className="mt-2 text-muted-foreground">

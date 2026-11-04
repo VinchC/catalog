@@ -51,7 +51,9 @@ export default function EditWorkForm({
           required
           maxLength={200}
           defaultValue={title}
-          className="w-full rounded-lg border border-border bg-background p-3"
+          disabled={pending}
+          aria-describedby={state.error ? "edit-work-error" : undefined}
+          className="w-full rounded-lg border border-border bg-background p-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current disabled:opacity-50"
         />
       </div>
 
@@ -67,7 +69,9 @@ export default function EditWorkForm({
           max="3000"
           required
           defaultValue={year}
-          className="w-full rounded-lg border border-border bg-background p-3"
+          disabled={pending}
+          aria-describedby={state.error ? "edit-work-error" : undefined}
+          className="w-full rounded-lg border border-border bg-background p-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current disabled:opacity-50"
         />
       </div>
 
@@ -80,7 +84,9 @@ export default function EditWorkForm({
           name="artistId"
           required
           defaultValue={artistId}
-          className="w-full rounded-lg border border-border bg-background p-3"
+          disabled={pending}
+          aria-describedby={state.error ? "edit-work-error" : undefined}
+          className="w-full rounded-lg border border-border bg-background p-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current disabled:opacity-50"
         >
           {artists.map((artist) => (
             <option key={artist.id} value={artist.id}>
@@ -90,7 +96,7 @@ export default function EditWorkForm({
         </select>
       </div>
 
-      <fieldset>
+      <fieldset disabled={pending}>
         <legend className="mb-3 font-medium">Genres musicaux</legend>
         <div className="space-y-2">
           {genres.map((genre) => (
@@ -100,6 +106,7 @@ export default function EditWorkForm({
                 name="genreIds"
                 value={genre.id}
                 defaultChecked={genreIds.includes(genre.id)}
+                className="size-4 accent-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
               />
               {genre.name}
             </label>
@@ -108,7 +115,7 @@ export default function EditWorkForm({
       </fieldset>
 
       {state.error && (
-        <p role="alert" className="text-sm text-red-600">
+        <p id="edit-work-error" role="alert" className="text-sm text-red-600">
           {state.error}
         </p>
       )}
@@ -117,14 +124,15 @@ export default function EditWorkForm({
         <button
           type="submit"
           disabled={pending}
-          className="rounded-lg bg-foreground px-5 py-3 text-background disabled:opacity-50"
+          className="rounded-lg bg-foreground px-5 py-3 text-background transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current disabled:cursor-not-allowed disabled:opacity-50"
         >
           {pending ? "Enregistrement..." : "Enregistrer les modifications"}
         </button>
 
         <Link
           href={`/catalog/music/works/${originalSlug}`}
-          className="rounded-lg border border-border px-5 py-3 transition-colors hover:bg-foreground/5"
+          aria-disabled={pending}
+          className="rounded-lg border border-border px-5 py-3 transition-colors hover:bg-foreground/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current"
         >
           Annuler
         </Link>

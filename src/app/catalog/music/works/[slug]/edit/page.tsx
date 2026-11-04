@@ -28,9 +28,14 @@ async function EditWorkContent({ params }: EditWorkPageProps) {
   ]);
 
   return (
-    <section className="mx-auto w-full max-w-2xl page_stack">
+    <section
+      aria-labelledby="page-title"
+      className="mx-auto w-full max-w-2xl page_stack"
+    >
       <div>
-        <h1 className="text-2xl font-bold">Modifier une œuvre musicale</h1>
+        <h1 id="page-title" className="text-2xl font-bold">
+          Modifier une œuvre musicale
+        </h1>
         <p className="mt-2 text-muted-foreground">
           Modifiez les informations de cette œuvre.
         </p>
