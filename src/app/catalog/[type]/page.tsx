@@ -114,11 +114,23 @@ async function CatalogContent({ params, searchParams }: CatalogPageProps) {
     notFound();
   }
 
-  const notice =
-    typeof query.notice === "string" &&
-    ["created", "updated", "deleted"].includes(query.notice)
-      ? (query.notice as "created" | "updated" | "deleted")
-      : undefined;
+  // Correspondance entre les paramètres d'URL et les notifications.
+  const noticeConfig = {
+    created: { action: "created", itemType: "œuvre" },
+    updated: { action: "updated", itemType: "œuvre" },
+    deleted: { action: "deleted", itemType: "œuvre" },
+
+    "artist-created": { action: "created", itemType: "artiste" },
+    "artist-updated": { action: "updated", itemType: "artiste" },
+    "artist-deleted": { action: "deleted", itemType: "artiste" },
+  } as const;
+
+  // Ignore les paramètres absents, multiples ou inconnus.
+  const noticeKey = typeof query.notice === "string" ? query.notice : "";
+
+  const notice = Object.hasOwn(noticeConfig, noticeKey)
+    ? noticeConfig[noticeKey as keyof typeof noticeConfig]
+    : undefined;
 
   return (
     <div className="page_stack">
@@ -130,7 +142,9 @@ async function CatalogContent({ params, searchParams }: CatalogPageProps) {
         <CreateWorkLink />
         <CreateArtistLink />
       </div>
-      {notice && <ActionNotice action={notice} itemType="œuvre" />}
+      {notice && (
+        <ActionNotice action={notice.action} itemType={notice.itemType} />
+      )}
 
       <MusicCatalog />
 
