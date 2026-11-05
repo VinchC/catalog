@@ -17,7 +17,7 @@ export async function updateMusicalWork(
   // Seuls les utilisateurs connectés peuvent modifier une œuvre.
   await requireUser();
 
-  const slug = String(formData.get("slug") ?? "");
+  const slug = String(formData.get("originalSlug") ?? "");
   const title = String(formData.get("title") ?? "").trim();
   const year = Number(formData.get("year"));
   const artistId = String(formData.get("artistId") ?? "");
