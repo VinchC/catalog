@@ -1,4 +1,3 @@
-
 "use server";
 
 import { prisma } from "@/lib/prisma";
@@ -6,6 +5,7 @@ import { requireUser } from "@/lib/auth/permissions";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { ArtistFormState } from "./types";
+import { validateArtist } from "@/lib/validation/artist";
 
 export async function createArtist(
   _prevState: ArtistFormState,
@@ -19,26 +19,9 @@ export async function createArtist(
   const rawEndYear = String(formData.get("endYear") ?? "").trim();
   const endYear = rawEndYear ? Number(rawEndYear) : null;
 
-  if (!name || !country) {
-    return { error: "Le nom et le pays sont obligatoires." };
-  }
+  const error = validateArtist({ name, country, startYear, endYear });
 
-  if (
-    !Number.isInteger(startYear) ||
-    startYear < 1 ||
-    startYear > 2100
-  ) {
-    return { error: "L'année de début est invalide." };
-  }
-
-  if (
-    endYear !== null &&
-    (!Number.isInteger(endYear) ||
-      endYear < startYear ||
-      endYear > 2100)
-  ) {
-    return { error: "L'année de fin est invalide." };
-  }
+  if (error) return { error };
 
   await prisma.artist.create({
     data: {
