@@ -1,7 +1,3 @@
-# Suppression des artistes - urgent et en cours
-
-# Notifications création, modification et suppression des artistes - urgent et en cours
-
 # Tests unitaires et end-to-end à mettre en place (PlayWright, Selenium ?) - ajout de qq tests automatisés
 
 # Déploiement :
@@ -20,3 +16,5 @@
 # Agent IA - je n'ai aucune idée de la complexité
 
 # Ajouter fonctionnalité Créer un genre accessible uniquement aux Admin. - facultatif car équivalent déjà créé pour works et artists
+
+# Point important : le serveur renvoie encore un statut HTTP 200 en cas de 404. C'est une imperfection, notamment pour les robots d'indexation et les outils qui s'appuient sur les codes HTTP
