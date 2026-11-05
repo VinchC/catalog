@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/auth/permissions";
 import { validateWork } from "@/lib/validation/work";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { slugify } from "@/lib/utils/slug";
 
 export type UpdateWorkState = {
   error?: string;
@@ -62,12 +63,7 @@ export async function updateMusicalWork(
   }
 
   // Génère un nouveau slug si le titre a changé.
-  const newSlug = `${title
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")}-${existingWork.id.slice(0, 8)}`;
+  const newSlug = `${slugify(title)}-${existingWork.id.slice(0, 8)}`;
 
   // Met à jour l'œuvre et remplace ses associations de genres.
   await prisma.musicalWork.update({

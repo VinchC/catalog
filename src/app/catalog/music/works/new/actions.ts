@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/auth/permissions";
 import { validateWork } from "@/lib/validation/work";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { slugify } from "@/lib/utils/slug";
 
 export type CreateWorkState = {
   error?: string;
@@ -48,12 +49,7 @@ export async function createMusicalWork(
 
   // Génère un identifiant et un slug uniques.
   const id = crypto.randomUUID();
-  const slug = `${title
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")}-${id.slice(0, 8)}`;
+  const slug = `${slugify(title)}-${id.slice(0, 8)}`;
 
   // Crée l'œuvre et ses associations avec les genres.
   await prisma.musicalWork.create({
