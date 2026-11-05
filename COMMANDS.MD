@@ -16,9 +16,13 @@ Application : http://localhost:3000
 
 ### Vérifications du code
 
+npm run test
+npm run test:integration
+npx playwright test
 npx tsc --noEmit
 npm run lint
 npm run build
+git status
 
 - `tsc` : vérification des types TypeScript.
 - `lint` : détection des problèmes de qualité du code.
@@ -72,7 +76,38 @@ npx prisma db seed
 
 ---
 
-## 3. PostgreSQL — Connexion et exploration
+## 3. Vérifications et tests
+
+### Tests unitaires en mode surveillance
+
+npm run test:watch
+
+### Tous les tests unitaires une seule fois
+
+npm run test
+
+### Tests d'intégration PostgreSQL
+
+npm run test:integration
+
+### Tests E2E Playwright
+
+npx playwright test
+
+### Tests E2E avec interface Playwright
+
+npx playwright test --ui
+
+### Rapport HTML Playwright
+
+npx playwright show-report
+
+NB : Les tests d'intégration utilisent .env.test et la base catalog_test.
+Vérifier que PostgreSQL est démarré avant de les lancer.
+
+Sécurité : ne jamais remplacer DATABASE_URL de .env.test par l'URL de la base de développement ou de production. Le test d'intégration vérifie que l'URL cible contient bien /catalog_test
+
+## 4. PostgreSQL — Connexion et exploration
 
 ### Se connecter à la base depuis Git Bash
 
@@ -134,7 +169,7 @@ ORDER BY ordinal_position;
 
 ---
 
-## 4. Docker — Gestion de PostgreSQL
+## 5. Docker — Gestion de PostgreSQL
 
 Les commandes suivantes sont à exécuter dans Git Bash, à la racine du projet.
 
@@ -184,7 +219,7 @@ Cette commande supprime les conteneurs, mais conserve le volume de données.
 
 ---
 
-## 5. Git — Suivi du projet
+## 6. Git — Suivi du projet
 
 ### Vérifier les modifications
 
@@ -208,7 +243,7 @@ git log --oneline
 
 ---
 
-## 6. Rappels importants
+## 7. Rappels importants
 
 - `.env` contient les variables de configuration et les secrets locaux.
 - Ne jamais publier `.env` sur GitHub.
@@ -219,7 +254,7 @@ git log --oneline
 - `npx prisma studio` permet d'explorer les données graphiquement.
 - Avant une modification importante du schéma, vérifier l'état des migrations et prévoir une sauvegarde.
 
-## 7. Ordre de vérification habituel
+## 8. Ordre de vérification habituel
 
 Après une modification du code :
 

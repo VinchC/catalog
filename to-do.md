@@ -1,5 +1,3 @@
-# Tests unitaires et end-to-end à mettre en place (PlayWright, Selenium ?) - ajout de qq tests automatisés
-
 # Déploiement :
 
 - tests auto avant commit sur branche - impératif (par exemple lancer npx tsc --noEmit, lint etc.)
