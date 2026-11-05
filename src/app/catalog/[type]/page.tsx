@@ -14,6 +14,7 @@ import {
 } from "@/lib/data/catalog";
 import CreateArtistLink from "@/components/catalog/CreateArtistLink";
 import EditArtistLink from "@/components/catalog/EditArtistLink";
+import DeleteArtistLink from "@/components/catalog/DeleteArtistLink";
 
 export const metadata: Metadata = {
   title: "Catalogue musical",
@@ -68,8 +69,13 @@ async function MusicCatalog() {
             <li key={artist.id} className="catalog_item space-y-2">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <h3 className="text-lg font-semibold">{artist.name}</h3>
-                <EditArtistLink id={artist.id} />
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <EditArtistLink id={artist.id} />
+                  <DeleteArtistLink id={artist.id} name={artist.name} />
+                </div>
               </div>
+
               <p>{artist.country}</p>
               <p>
                 {artist.startYear}
