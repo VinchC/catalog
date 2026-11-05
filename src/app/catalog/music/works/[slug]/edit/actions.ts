@@ -1,11 +1,10 @@
-
 "use server";
 
+import { prisma } from "@/lib/prisma";
+import { requireUser } from "@/lib/auth/permissions";
+import { validateWork } from "@/lib/validation/work";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-
-import { requireUser } from "@/lib/auth/permissions";
-import { prisma } from "@/lib/prisma";
 
 export type UpdateWorkState = {
   error?: string;
@@ -15,107 +14,83 @@ export async function updateMusicalWork(
   _prevState: UpdateWorkState,
   formData: FormData,
 ): Promise<UpdateWorkState> {
+  // Seuls les utilisateurs connectés peuvent modifier une œuvre.
   await requireUser();
 
-  const originalSlug = formData.get("originalSlug");
-  const title = formData.get("title");
-  const yearValue = formData.get("year");
-  const artistId = formData.get("artistId");
-  const genreIds = formData.getAll("genreIds");
-
-  if (
-    typeof originalSlug !== "string" ||
-    typeof title !== "string" ||
-    typeof yearValue !== "string" ||
-    typeof artistId !== "string" ||
-    !originalSlug ||
-    !title.trim() ||
-    !yearValue.trim() ||
-    !artistId
-  ) {
-    return { error: "Veuillez renseigner tous les champs obligatoires." };
-  }
-
-  const year = Number(yearValue);
-
-  if (!Number.isInteger(year) || year < 1 || year > 3000) {
-    return { error: "Veuillez saisir une année valide." };
-  }
-
-  if (!genreIds.every((id) => typeof id === "string")) {
-    return { error: "La sélection des genres est invalide." };
-  }
-
-  const uniqueGenreIds = [...new Set(genreIds as string[])];
-
-  const slug = title
-    .trim()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
+  const slug = String(formData.get("slug") ?? "");
+  const title = String(formData.get("title") ?? "").trim();
+  const year = Number(formData.get("year"));
+  const artistId = String(formData.get("artistId") ?? "");
+  const genreIds = formData.getAll("genreIds").map(String);
 
   if (!slug) {
-    return { error: "Impossible de générer une adresse à partir du titre." };
+    return { error: "Identifiant de l'œuvre manquant." };
   }
 
-  const work = await prisma.musicalWork.findUnique({
-    where: { slug: originalSlug },
+  // Vérifie les champs et leur cohérence.
+  const error = validateWork({ title, year, artistId, genreIds });
+  if (error) return { error };
+
+  // Vérifie que l'œuvre existe.
+  const existingWork = await prisma.musicalWork.findUnique({
+    where: { slug },
+    select: { id: true, slug: true },
   });
 
-  if (!work) {
-    return { error: "Cette œuvre n'existe plus." };
+  if (!existingWork) {
+    return { error: "Cette œuvre n'existe pas." };
   }
 
-  const [artist, genres, existingWork] = await Promise.all([
-    prisma.artist.findUnique({ where: { id: artistId } }),
-    prisma.musicGenre.findMany({
-      where: { id: { in: uniqueGenreIds } },
-      select: { id: true },
-    }),
-    prisma.musicalWork.findFirst({
-      where: {
-        slug,
-        id: { not: work.id },
-      },
-    }),
-  ]);
+  // Vérifie l'existence de l'artiste.
+  const artist = await prisma.artist.findUnique({
+    where: { id: artistId },
+    select: { id: true },
+  });
 
   if (!artist) {
     return { error: "L'artiste sélectionné n'existe pas." };
   }
 
-  if (genres.length !== uniqueGenreIds.length) {
+  // Vérifie l'existence de tous les genres sélectionnés.
+  const genres = await prisma.musicGenre.findMany({
+    where: { id: { in: genreIds } },
+    select: { id: true },
+  });
+
+  if (genres.length !== genreIds.length) {
     return { error: "Un ou plusieurs genres sélectionnés sont invalides." };
   }
 
-  if (existingWork) {
-    return { error: "Une autre œuvre utilise déjà ce titre." };
-  }
+  // Génère un nouveau slug si le titre a changé.
+  const newSlug = `${title
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")}-${existingWork.id.slice(0, 8)}`;
 
+  // Met à jour l'œuvre et remplace ses associations de genres.
   await prisma.musicalWork.update({
-    where: { id: work.id },
+    where: { slug },
     data: {
-      title: title.trim(),
-      slug,
+      title,
+      slug: newSlug,
       year,
       artistId,
       genres: {
         deleteMany: {},
-        create: uniqueGenreIds.map((genreId) => ({
+        create: genreIds.map((genreId) => ({
           genre: { connect: { id: genreId } },
         })),
       },
     },
   });
 
-  // Invalide les pages susceptibles de contenir les anciennes données.
+  // Actualise les pages concernées.
   revalidatePath("/catalog/music");
-  revalidatePath(`/catalog/music/works/${originalSlug}`);
   revalidatePath(`/catalog/music/works/${slug}`);
-  revalidatePath(`/catalog/music/works/${originalSlug}/edit`);
-  revalidatePath(`/catalog/music/works/${slug}/edit`);
+  revalidatePath(`/catalog/music/works/${newSlug}`);
+  revalidatePath(`/catalog/music/works/${newSlug}/edit`);
 
   redirect("/catalog/music?notice=updated");
 }
