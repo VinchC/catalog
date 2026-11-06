@@ -100,3 +100,39 @@ jobs:
 
       - name: Exécuter les tests E2E
         run: npm run test:e2e
+
+  deploy-production:
+    name: Migrations de production
+    needs: validate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    environment: production
+
+    concurrency:
+      group: production-database-migrations
+      cancel-in-progress: false
+
+    permissions:
+      contents: read
+
+    env:
+      DIRECT_URL: ${{ secrets.DIRECT_URL }}
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v5
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 26.13.0
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Appliquer les migrations de production
+        run: npx prisma migrate deploy
+
+      - name: Vérifier le statut des migrations
+        run: npx prisma migrate status
