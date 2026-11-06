@@ -101,7 +101,7 @@ jobs:
       - name: Exécuter les tests E2E
         run: npm run test:e2e
 
-  deploy-production:
+  migrate-production:
     name: Migrations de production
     needs: validate
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -136,3 +136,31 @@ jobs:
 
       - name: Vérifier le statut des migrations
         run: npx prisma migrate status
+
+  deploy-production:
+    name: Déploiement Vercel Production
+    needs: migrate-production
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    environment: production
+
+    permissions:
+      contents: read
+
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v5
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 26.13.0
+          cache: npm
+
+      - name: Déployer sur Vercel
+        run: npx --yes vercel@latest deploy --prod --yes --token="$VERCEL_TOKEN"
