@@ -9,7 +9,7 @@ on:
 jobs:
   validate:
     name: Tests et validation
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     services:
       postgres:
@@ -36,13 +36,18 @@ jobs:
 
     steps:
       - name: Récupérer le code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Installer Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 26
+          node-version: 26.13.0
           cache: npm
+
+      - name: Afficher les versions
+        run: |
+          node --version
+          npm --version
 
       - name: Installer les dépendances
         run: npm ci
@@ -57,8 +62,11 @@ jobs:
       - name: Appliquer les migrations
         run: npx prisma migrate deploy
 
+      - name: Vérifier le statut des migrations
+        run: npx prisma migrate status
+
       - name: Importer les données du catalogue
-        run: npx tsx prisma/seed.ts
+        run: npx prisma db seed
 
       - name: Créer les comptes de test
         run: npx tsx prisma/create-users.ts
