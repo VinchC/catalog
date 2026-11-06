@@ -1,0 +1,31 @@
+@layer components {
+  /* Liens de sélection des catalogues. */
+  .catalog_link {
+    @apply block rounded-lg border border-border p-6 transition-colors hover:bg-foreground/5 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current;
+  }
+
+  /* Cartes des éléments du catalogue. */
+  .catalog_item {
+    @apply rounded-lg border border-border p-4;
+  }
+
+  /* Grille responsive des éléments. */
+  .items_list {
+    @apply grid grid-cols-1 gap-4 xs:grid-cols-2 lg:grid-cols-3;
+  }
+
+  /* Espacement vertical des pages. */
+  .page_stack {
+    @apply space-y-8;
+  }
+
+  /* Espacement des fiches détaillées. */
+  .item_stack {
+    @apply mt-8;
+  }
+
+  /* Liens de navigation et actions du Header. */
+  .header-link {
+    @apply text-sm underline-offset-4 hover:underline focus-visible:rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current;
+  }
+}

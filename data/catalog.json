@@ -1,0 +1,115 @@
+{
+  "music": {
+    "artists": [
+      {
+        "id": "artist-001",
+        "name": "Pink Floyd",
+        "country": "Royaume-Uni",
+        "startYear": 1965,
+        "endYear": 2014
+      },
+      {
+        "id": "artist-002",
+        "name": "Daft Punk",
+        "country": "France",
+        "startYear": 1993,
+        "endYear": 2021
+      },
+      {
+        "id": "artist-003",
+        "name": "Miles Davis",
+        "country": "États-Unis",
+        "startYear": 1944,
+        "endYear": 1991
+      }
+    ],
+    "genres": [
+      { "id": "mgenre-001", "name": "Rock progressif" },
+      { "id": "mgenre-002", "name": "Musique électronique" },
+      { "id": "mgenre-003", "name": "Jazz" },
+      { "id": "mgenre-004", "name": "Jazz fusion" }
+    ],
+    "works": [
+      {
+        "id": "work-001",
+        "title": "The Dark Side of the Moon",
+        "slug": "the-dark-side-of-the-moon",
+        "artistId": "artist-001",
+        "year": 1973,
+        "genreIds": ["mgenre-001"]
+      },
+      {
+        "id": "work-002",
+        "title": "Wish You Were Here",
+        "slug": "wish-you-were-here",
+        "artistId": "artist-001",
+        "year": 1975,
+        "genreIds": ["mgenre-001"]
+      },
+      {
+        "id": "work-003",
+        "title": "Random Access Memories",
+        "slug": "random-access-memories",
+        "artistId": "artist-002",
+        "year": 2013,
+        "genreIds": ["mgenre-002"]
+      },
+      {
+        "id": "work-004",
+        "title": "Bitches Brew",
+        "slug": "bitches-brew",
+        "artistId": "artist-003",
+        "year": 1970,
+        "genreIds": ["mgenre-003", "mgenre-004"]
+      }
+    ]
+  },
+  "cinema": {
+    "directors": [
+      {
+        "id": "director-001",
+        "name": "Christopher Nolan",
+        "country": "Royaume-Uni",
+        "birthYear": 1970
+      },
+      {
+        "id": "director-002",
+        "name": "Stanley Kubrick",
+        "country": "Etats-Unis",
+        "birthYear": 1928,
+        "deathYear": 1999
+      }
+    ],
+    "genres": [
+      { "id": "cgenre-001", "name": "Science-fiction" },
+      { "id": "cgenre-002", "name": "Drame" },
+      { "id": "cgenre-003", "name": "Documentaire" }
+    ],
+    "movies": [
+      {
+        "id": "movie-001",
+        "title": "Interstellar",
+        "slug": "interstellar",
+        "directorId": "director-001",
+        "year": 2014,
+        "genreIds": ["cgenre-001", "cgenre-002"]
+      },
+      {
+        "id": "movie-002",
+        "title": "Inception",
+        "slug": "inception",
+        "directorId": "director-001",
+        "year": 2010,
+        "genreIds": ["cgenre-001"]
+      },
+      {
+        "id": "movie-003",
+        "title": "Orange mécanique",
+        "slug": "orange-mecanique",
+        "directorId": "director-002",
+        "year": 1971,
+        "genreIds": ["cgenre-002"]
+      }
+    ]
+  }
+}
