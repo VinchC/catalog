@@ -14,8 +14,8 @@ export default defineConfig({
     seed: "tsx prisma/seed.ts",
   },
 
-  // URL de connexion à la base PostgreSQL.
+  // URL directe utilisée par Prisma CLI.
   datasource: {
-    url: env("DATABASE_URL"),
+    url: env("DIRECT_URL"),
   },
 });
