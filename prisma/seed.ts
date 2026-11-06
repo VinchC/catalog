@@ -1,4 +1,3 @@
-
 import "dotenv/config";
 
 import { PrismaPg } from "@prisma/adapter-pg";
@@ -6,9 +5,20 @@ import { PrismaClient } from "../src/generated/prisma/client";
 
 import catalogData from "../data/catalog.json";
 
+// Vérifie la présence de la variable d'environnement.
+function getRequiredEnv(name: string): string {
+  const value = process.env[name];
+
+  if (!value) {
+    throw new Error(`La variable ${name} est absente.`);
+  }
+
+  return value;
+}
+
 // Initialise la connexion PostgreSQL avec l'adaptateur Prisma 7.
 const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL!,
+  connectionString: getRequiredEnv("DIRECT_URL"),
 });
 
 const prisma = new PrismaClient({ adapter });
